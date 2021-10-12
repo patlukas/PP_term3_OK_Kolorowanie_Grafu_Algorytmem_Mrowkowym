@@ -1,5 +1,3 @@
-
-
 class Main:
     def __init__(self):
         self.__number_of_vertices = 0
@@ -13,6 +11,7 @@ class Main:
 
         self.__assigning_colors()
 
+        print(self.__incidence_matrix)
         print(self.__vertex_colors)
 
     def __loading_a_list_of_edges(self):
