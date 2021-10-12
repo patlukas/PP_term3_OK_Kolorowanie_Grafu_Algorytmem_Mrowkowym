@@ -1,10 +1,9 @@
 import random
-import time
 
 
 class Main:
     def __init__(self):
-        self.__number_of_vertices = 10
+        self.__number_of_vertices = 30
         self.__graph_density = 50
         self.__edges_list = []
 
@@ -14,9 +13,9 @@ class Main:
         self.__save_edges_list()
 
     def __get_data_from_user(self):
-        print("Witaj w generatorze instancji do problemu GC!\n")
-        number_of_vertices = input(f"Ilość wierzchołków w grafie (domyślnie {self.__number_of_vertices}): ")
-        graph_density = input(f"Procent gęstości grafu (domyślnie {self.__graph_density}%): ")
+        print("\nWitaj w generatorze instancji do problemu GC!")
+        number_of_vertices = input(f"\tIlość wierzchołków w grafie (domyślnie {self.__number_of_vertices}): ")
+        graph_density = input(f"\tProcent gęstości grafu (domyślnie {self.__graph_density}%): ")
 
         if number_of_vertices != "":
             self.__number_of_vertices = int(number_of_vertices)
@@ -25,14 +24,14 @@ class Main:
             self.__graph_density = int(graph_density)
 
     def __generate_list_all_edges(self):
-        for a in range(self.__number_of_vertices):
+        for a in range(1, self.__number_of_vertices):
             for b in range(a+1, self.__number_of_vertices+1):
                 self.__edges_list.append([a, b])
 
     def __generate_edges_list(self):
         maximum_number_of_edges = self.__number_of_vertices * (self.__number_of_vertices - 1) / 2
-        while len(self.__edges_list) - 1 > maximum_number_of_edges * self.__graph_density / 100:
-            index_to_del = random.randint(0, len(self.__edges_list))
+        while len(self.__edges_list) > maximum_number_of_edges * self.__graph_density / 100:
+            index_to_del = random.randint(0, len(self.__edges_list)-1)
             self.__edges_list.pop(index_to_del)
 
     def __save_edges_list(self):
