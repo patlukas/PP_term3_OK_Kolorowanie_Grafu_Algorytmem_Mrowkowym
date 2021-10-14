@@ -25,6 +25,7 @@ class Main:
 
         print(self.__incidence_matrix)
         print(self.__vertex_colors)
+        print(max(self.__vertex_colors.values()))
 
     def __loading_a_list_of_edges(self):
         """
