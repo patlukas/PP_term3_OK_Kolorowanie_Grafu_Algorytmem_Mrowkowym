@@ -5,12 +5,12 @@ class Main:
             __number_of_vertices (int) liczba wierzchołków
             __edges_list (list) lista dwuelementowych list w których wartości oznaczają między jakimi
                                                            wierzchołkami jest krawędź
-            __incidence_matrix (dict) lista incydencji, czyli każdy wierzchołek ma swój klucz gdzie jest lista intów
-                                      z którymi jest połączony,
-                                      istnieje zarówno pod kluczem a wartość b jak pod kluczem b wartość a
-            __vertex_colors (dict) słownik gdzie każdy wierzchołek ma miejsce do wpisania koloru, początkowo wszystkie
-                                   wierzchołki mają kolor 0, ale ostatecznie to musi się zmienić, bo kolory
-                                   będą liczbami całkowitymi dodatkimi
+            __incidence_matrix (dict) lista incydencji, czyli każdy wierzchołek ma swój klucz gdzie jest lista
+                                      numerów wierzchołków z którymi jest połączony,
+                                      istnieje zarówno pod kluczem "a" wartość "b", jak pod kluczem "b" wartość "a"
+            __vertex_colors (dict) słownik gdzie każdy wierzchołek ma miejsce do wpisania numeru koloru,
+                                   początkowo wszystkie wierzchołki mają kolor 0, ale ostatecznie to musi się zmienić,
+                                   bo w słowniku wynikowym kolory będą liczbami całkowitymi dodatkimi
         """
         self.__number_of_vertices = 0
         self.__edges_list = []
