@@ -23,9 +23,9 @@ class Main:
 
         self.__assigning_colors()
 
-        print(self.__incidence_matrix)
-        print(self.__vertex_colors)
-        print(max(self.__vertex_colors.values()))
+        print("Tablica incydencji: ", self.__incidence_matrix)
+        print("Rezultat (wierzchołek:kolor): ", self.__vertex_colors)
+        print("Maksymalny koor: ", max(self.__vertex_colors.values()))
 
     def __loading_a_list_of_edges(self):
         """
