@@ -23,9 +23,15 @@ class Main:
 
         self.__assigning_colors()
 
-        print("Tablica incydencji: ", self.__incidence_matrix)
-        print("Rezultat (wierzchołek:kolor): ", self.__vertex_colors)
-        print("Maksymalny koor: ", max(self.__vertex_colors.values()))
+        #print("Tablica incydencji: ", self.__incidence_matrix)
+        #
+        # print("Rezultat (wierzchołek:kolor): ", self.__vertex_colors)
+        # print("Maksymalny kolor: ", max(self.__vertex_colors.values()))
+
+        for x, y in self.__vertex_colors.items():
+            print(f"For V = {x} the color is {y}")
+
+        print("Maksymalny kolor: ", max(self.__vertex_colors.values()))
 
     def __loading_a_list_of_edges(self):
         """
@@ -54,10 +60,10 @@ class Main:
                 line = line.replace(f"\r\n", "")
                 line = line.replace(f"\n", "")
                 list_numbers = line.split()
-                if len(list_numbers) != 3:
-                    print(f'W pliku "instance.txt" w linii {nr_line} nie są trzy liczby')
+                if len(list_numbers) != 2:
+                    print(f'W pliku "instance.txt" w linii {nr_line} nie są dwie liczby')
                     continue
-                a, b = int(list_numbers[1]), int(list_numbers[2])
+                a, b = int(list_numbers[0]), int(list_numbers[1])
                 if a > b:  # Czy jeżeli a > b to na liście jest również para b a ?
                     continue
                 if a == b:

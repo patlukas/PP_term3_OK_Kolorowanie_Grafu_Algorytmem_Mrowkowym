@@ -82,7 +82,7 @@ class Main:
         file = open("instance.txt", "w")
         text = str(self.__number_of_vertices)+"\n"
         for index, [a, b] in enumerate(self.__edges_list):
-            text += f"{index+1} {a} {b}\n"
+            text += f"{a} {b}\n"
         file.write(text)
         file.close()
 
