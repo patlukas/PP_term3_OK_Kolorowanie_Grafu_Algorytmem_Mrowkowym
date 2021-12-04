@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5187612a-14fb-428e-909b-b93392b0a55b}</ProjectGuid>
-    <RootNamespace>CPP</RootNamespace>
+    <ProjectGuid>{c83897f2-ba51-475e-a8fa-890821e5371f}</ProjectGuid>
+    <RootNamespace>PPOKGC</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CPP.cpp" />
+    <ClCompile Include="PP_OK_GC.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
