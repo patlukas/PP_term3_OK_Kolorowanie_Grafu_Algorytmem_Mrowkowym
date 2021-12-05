@@ -2,9 +2,23 @@
 //
 
 #include <iostream>
+#include <vector>
+#include "AntSLF.h"
 
+using namespace std;
 int main()
 {
+    vector<int> list[4];
+    list[0].push_back(1);
+    list[0].push_back(2);
+    list[1].push_back(0);
+    list[1].push_back(2);
+    list[2].push_back(0);
+    list[2].push_back(1);
+
+    AntSLF k(list, 3);
+    for (int i = 0; i < 4; i++) cout << k.listSetColorVertices[i] << " ";
+
     std::cout << "Hello World!\n";
 }
 

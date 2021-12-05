@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ACO.cpp" />
+    <ClCompile Include="AntSLF.cpp" />
     <ClCompile Include="PP_OK_GC.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ACO.h" />
+    <ClInclude Include="AntSLF.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
