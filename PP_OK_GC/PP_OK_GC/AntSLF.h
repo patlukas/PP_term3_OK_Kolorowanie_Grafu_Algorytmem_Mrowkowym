@@ -1,31 +1,34 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
 class AntSLF {
 	int numberOfVertices;
 	
-	vector<int> * listaSasiedztwa; 
-	int * c_min; //c_min[i] - minimalny koor jaki mo¿e byæ przyporz¹dkowany wierzcho³kowi i
-	int * dsat; //dsat[i] - storieñ nasycenia wierzcho³ka i
+	vector<vector<int>> listaSasiedztwa; //lista s¹siedztwa grafu
+	vector<int> c_min; //c_min[x] - minimalny kolor jaki mo¿e byæ przyporz¹dkowany wierzcho³kowi x
+	vector<int> dsat; //dsat[x] - stopieñ nasycenia wierzcho³ka x
 	vector<int> verticesWithoutColor; //zbiór wierzcho³ków nie pokolorowanych
-	vector<int> * subsetsOfVertices; //podzbiowy wierzcho³ków
-	vector<vector<int>*> allSolutions;
+	vector<vector<int>> coloringQuality; //zbiór wierzcho³ków nie pokolorowanych
 
 	int znajdzWierzcholekONajwiekszymStopniu(vector<int>);
 	void arraysInicjalization(int);
 	void coloringVertice(int, int);
 	void deleteColoredVerticeFromListVerticesWithoutColor(int);
-	void saveSolution();
 	int chooseVertice();
 	int getMinValColorForVertice(int);
 	int getDsat(int);
+	int chooseVertice_calculateN1(int);
+	float chooseVertice_calculateT1(int);
+	float chooseVertice_calculateT2(int, int);
 
 public:
-	AntSLF(vector<int>*, int);
-	int* listSetColorVertices;
-	int numberOfColors;
+	AntSLF(vector<vector<int>>, int, vector<vector<int>>);
+	vector<int> listSetColorVertices;
+	int numberOfColors; //iloœæ u¿ytych kolorów
+	vector<vector<int>> subsetsOfVertices; //podzbiowy wierzcho³ków
 };
 
