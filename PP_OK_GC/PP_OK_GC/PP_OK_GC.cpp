@@ -3,20 +3,43 @@
 
 #include "ACO.h"
 #include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
-int main() {
-    vector<pair<int, int>> edges;
-    edges.push_back(make_pair(0, 2));
-    edges.push_back({1, 2 });
-    edges.push_back({1, 2 });
-    edges.push_back({1, 4 });
-    edges.push_back({2, 3 });
-    edges.push_back({0, 4 });
+pair<vector<pair<int, int>>, int> getData() {
+    int numberOfVertice;
+    fstream file;
+    file.open("instance6.txt", ios::in); 
+    string k;
+    getline(file, k);
+    numberOfVertice = stoi(k);
     
-    ACO k(edges, 5);
+    vector<pair<int, int>> v;
+    while (getline(file, k)) {
+        cout << "L " << k << endl;
+        int l1 = stoi(k.substr(0, k.find(" ")))-1, l2 = stoi(k.substr(k.find(" ") + 1))-1;
+        if(l1 < l2) v.push_back(make_pair(l1, l2));
+    }
+    return make_pair(v, numberOfVertice);
+}
+
+
+int main() {
+    srand(time(NULL));
+    //srand((unsigned int)time(NULL));
+
+    pair<vector<pair<int, int>>, int> r = getData();
+    //cout << r.second << endl;
+    //for (auto pp : r.first) cout <<"L " << pp.first << " " << pp.second << endl;
+    vector<pair<int, int>> edges = r.first;
+  //  edges.push_back(make_pair(1, 2));
+    int numverOfVertive = r.second;
+    ACO k(edges, numverOfVertive);
     cout << k.minNumberOfColor << endl;
     for (int i = 0; i < k.minNumberOfColor; i++) {
         cout << "Kolor " << i << ": ";
@@ -26,4 +49,3 @@ int main() {
     
     cout << "Hello World!\n";
 }
-

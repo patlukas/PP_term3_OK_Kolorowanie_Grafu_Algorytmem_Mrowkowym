@@ -2,27 +2,35 @@
 
 ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 	
-	this->wyparowywanie = 0.95;
+	this->wyparowywanie = 0.65;
 	this->minNumberOfColor = numberOfVertices;
-	this->numberOfCycle = 5;
-	this->numberOfAnt = 5;
+	this->numberOfCycle = 25;
+	this->numberOfAnt = 100;
 	vector<vector<int>> bestSubsetsOfVertices(numberOfVertices);
 	this->bestSubsetsOfVertices = bestSubsetsOfVertices;
 
 	this->edges = edges;
 
 	this->numberOfVertices = numberOfVertices;
+
 	this->createListaSasiedztwa();
+
 	this->createListaNieSasiedztwa();
 	this->inicjalizationArrayQuality(numberOfVertices);
 
 	this->setQualityNieSasiadow(); 
 	for (int cycle = 0; cycle < this->numberOfCycle; cycle++) {
+		cout <<"Cykl "<< cycle << endl;
 		this->setQualityDeltaNieSasiadow();
 		int i = 0;
 		for (int ant = 0; ant < this->numberOfAnt; ant++) {
+			//Sleep(1985);
+			cout << "\tAnt " << ant << endl;
+			clock_t s = clock();
 			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality);
+			cout << "\t\tKolorow " << slf.numberOfColors <<" Czas: "<< ((clock() - s) / (double)CLOCKS_PER_SEC) << endl;
 			if (slf.numberOfColors < this->minNumberOfColor) {
+				cout << "\t\t\tREKORD" << endl;
 				this->bestSubsetsOfVertices = slf.subsetsOfVertices;
 				this->minNumberOfColor = slf.numberOfColors;
 			}
@@ -31,8 +39,10 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 				for (j = 0; j < this->numberOfVertices; j++) {
 					bool inSubsets = false;
 					for (auto vertice : slf.subsetsOfVertices[j]) {
-						inSubsets = true;
-						break;
+						if (vertice == i) {
+							inSubsets = true;
+							break;
+						}
 					}
 					if (inSubsets) break;
 				}
@@ -43,11 +53,11 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 					}
 				}
 			}
-			for (int i = 0; i < this->numberOfVertices; i++) {
-				for (auto vertice : this->listaNieSasiedztwa[i]) {
-					if (vertice > i)
-						this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
-				}
+		}
+		for (int i = 0; i < this->numberOfVertices; i++) {
+			for (auto vertice : this->listaNieSasiedztwa[i]) {
+				if (vertice > i)
+					this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
 			}
 		}
 	}

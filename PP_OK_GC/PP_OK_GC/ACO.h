@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <ctime>
+#include <Windows.h>
+
 #include "AntSLF.h"
 
 using namespace std;
