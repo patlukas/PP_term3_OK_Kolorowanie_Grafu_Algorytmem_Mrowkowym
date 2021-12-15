@@ -14,7 +14,7 @@ class AntSLF {
 	vector<int> c_min; //c_min[x] - minimalny kolor jaki mo¿e byæ przyporz¹dkowany wierzcho³kowi x
 	vector<int> dsat; //dsat[x] - stopieñ nasycenia wierzcho³ka x
 	vector<int> verticesWithoutColor; //zbiór wierzcho³ków nie pokolorowanych
-	vector<vector<int>> coloringQuality; //zbiór wierzcho³ków nie pokolorowanych
+	vector<vector<int>> coloringQuality; //iloœæ feromoonu
 
 	int znajdzWierzcholekONajwiekszymStopniu(vector<int>);
 	void arraysInicjalization(int);

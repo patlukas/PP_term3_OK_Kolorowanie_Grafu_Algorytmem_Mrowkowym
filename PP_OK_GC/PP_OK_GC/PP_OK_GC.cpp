@@ -14,7 +14,7 @@ using namespace std;
 pair<vector<pair<int, int>>, int> getData() {
     int numberOfVertice;
     fstream file;
-    file.open("instance6.txt", ios::in); 
+    file.open("le450_5a.txt", ios::in); 
     string k;
     getline(file, k);
     numberOfVertice = stoi(k);
@@ -30,7 +30,8 @@ pair<vector<pair<int, int>>, int> getData() {
 
 
 int main() {
-    srand(time(NULL));
+    //srand(time(NULL));
+    srand(100);
     //srand((unsigned int)time(NULL));
 
     pair<vector<pair<int, int>>, int> r = getData();

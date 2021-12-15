@@ -2,10 +2,10 @@
 
 ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 	
-	this->wyparowywanie = 0.65;
+	this->wyparowywanie = 0.5;
 	this->minNumberOfColor = numberOfVertices;
-	this->numberOfCycle = 25;
-	this->numberOfAnt = 100;
+	this->numberOfCycle = 10;
+	this->numberOfAnt = 3;
 	vector<vector<int>> bestSubsetsOfVertices(numberOfVertices);
 	this->bestSubsetsOfVertices = bestSubsetsOfVertices;
 
