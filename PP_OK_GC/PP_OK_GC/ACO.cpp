@@ -4,8 +4,8 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 	
 	this->wyparowywanie = 0.5;
 	this->minNumberOfColor = numberOfVertices;
-	this->numberOfCycle = 10;
-	this->numberOfAnt = 3;
+	this->numberOfCycle = 250;
+	this->numberOfAnt = 10;
 	vector<vector<int>> bestSubsetsOfVertices(numberOfVertices);
 	this->bestSubsetsOfVertices = bestSubsetsOfVertices;
 
@@ -23,14 +23,16 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 		cout <<"Cykl "<< cycle << endl;
 		this->setQualityDeltaNieSasiadow();
 		int i = 0;
+		float kkk = 0;
 		for (int ant = 0; ant < this->numberOfAnt; ant++) {
-			//Sleep(1985);
+			
 			cout << "\tAnt " << ant << endl;
 			clock_t s = clock();
 			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality);
+			kkk += slf.numberOfColors;
 			cout << "\t\tKolorow " << slf.numberOfColors <<" Czas: "<< ((clock() - s) / (double)CLOCKS_PER_SEC) << endl;
 			if (slf.numberOfColors < this->minNumberOfColor) {
-				cout << "\t\t\tREKORD" << endl;
+				cout << "\t\t\tREKORD " << slf.numberOfColors<<endl;
 				this->bestSubsetsOfVertices = slf.subsetsOfVertices;
 				this->minNumberOfColor = slf.numberOfColors;
 			}
@@ -49,23 +51,26 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 				for (auto nieSasiad : this->listaNieSasiedztwa[i]) {
 					if (i > nieSasiad) continue;
 					for (auto vertice : slf.subsetsOfVertices[j]) {
-						if (vertice == nieSasiad) this->coloringQualityDelta[i][nieSasiad] += 1 / slf.numberOfColors;
+						if (vertice == nieSasiad) this->coloringQualityDelta[i][nieSasiad] += (1 / (float)slf.numberOfColors);
 					}
 				}
 			}
 		}
+		cout << "\t" << kkk / numberOfAnt << endl;
 		for (int i = 0; i < this->numberOfVertices; i++) {
 			for (auto vertice : this->listaNieSasiedztwa[i]) {
 				if (vertice > i)
 					this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
+				//cout << this->coloringQuality[i][vertice] << " ";
 			}
+			//cout << endl;
 		}
 	}
 }
 
 void ACO::inicjalizationArrayQuality(int numberOfVertices) {
 	for (int i = 0; i < numberOfVertices; i++) {
-		vector<int> temp(numberOfVertices);
+		vector<float> temp(numberOfVertices);
 		this->coloringQuality.push_back(temp);
 		this->coloringQualityDelta.push_back(temp);
 	}

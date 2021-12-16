@@ -13,8 +13,8 @@ class ACO{
 	int numberOfVertices;
 	int numberOfCycle;
 	int numberOfAnt;
-	vector<vector<int>> coloringQuality;
-	vector<vector<int>> coloringQualityDelta;
+	vector<vector<float>> coloringQuality;
+	vector<vector<float>> coloringQualityDelta;
 	vector<vector<int>> listaSasiedztwa;
 	vector<vector<int>> listaNieSasiedztwa;
 	vector<pair<int, int>> edges;

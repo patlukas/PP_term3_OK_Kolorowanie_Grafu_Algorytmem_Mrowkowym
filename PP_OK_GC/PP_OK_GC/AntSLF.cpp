@@ -1,6 +1,6 @@
 #include "AntSLF.h"
 
-AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<int>> coloringQuality) {
+AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<float>> coloringQuality) {
 	//rand();
 	//srand((unsigned int)time(NULL));
 	/*
@@ -29,24 +29,27 @@ AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector
 	this->coloringVertice(verticesToColoring, color);
 	//cout << verticesToColoring << " ";
 	while(this->verticesWithoutColor.size() > 1) {
-		for (int indexVertice : this->verticesWithoutColor) {
-			this->c_min[indexVertice] = this->getMinValColorForVertice(indexVertice);
-			this->dsat[indexVertice] = this->getDsat(indexVertice);
-		}
+		cout << this->verticesWithoutColor.size() << endl;
 		this->deleteColoredVerticeFromListVerticesWithoutColor(verticesToColoring);
+		for (int indexVertice : this->verticesWithoutColor) {
+			if (find(this->listaSasiedztwa[indexVertice].begin(), this->listaSasiedztwa[indexVertice].end(), verticesToColoring) != this->listaSasiedztwa[indexVertice].end()) {
+				this->c_min[indexVertice] = this->getMinValColorForVertice(indexVertice);
+				this->dsat[indexVertice] = this->getDsat(indexVertice);
+			}
+		}
 		verticesToColoring = this->chooseVertice();//wybranie wierzcho³ka v 1. strategi¹
 		//cout << verticesToColoring << " ";
 		color = this->c_min[verticesToColoring];//wybranie koloru 1. strategi¹
 		this->coloringVertice(verticesToColoring, color);
 		if (color == this->numberOfColors) this->numberOfColors+=1;
 	}
-	cout << "| " << this->numberOfColors << endl;
+	//cout << "| " << this->numberOfColors << endl;
 }
 
 int AntSLF::chooseVertice() {
-	double alfa = 1, beta = 2;
-	vector<double> p(this->verticesWithoutColor.size());
-	double mianownik = 0;
+	float alfa = 2, beta = 1 ;
+	vector<float> p(this->verticesWithoutColor.size());
+	float mianownik = 0;
 	
 	for (int i = 0; i < this->verticesWithoutColor.size(); i++) {
 		p[i] = pow(this->chooseVertice_calculateT1(this->verticesWithoutColor[i]), alfa);
@@ -54,8 +57,10 @@ int AntSLF::chooseVertice() {
 		mianownik += p[i];
 	}
 	for (int i = 0; i < this->verticesWithoutColor.size(); i++) p[i] /= mianownik;
-	double random = (rand() % 10000) / 10000;
-	double sum = 0;
+	float random = (rand() % 10000);// / 10000;
+	random /= 10000;
+	//cout << "\t\t\t\t\t\t\t\t" << random<< endl;
+	float sum = 0;
 	for (int i = 0; i < p.size(); i++) {
 		sum += p[i];
 		if (sum >= random) return this->verticesWithoutColor[i];

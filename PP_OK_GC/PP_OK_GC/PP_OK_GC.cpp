@@ -14,14 +14,14 @@ using namespace std;
 pair<vector<pair<int, int>>, int> getData() {
     int numberOfVertice;
     fstream file;
-    file.open("le450_5a.txt", ios::in); 
+    file.open("gc_1000_300013.txt", ios::in); 
     string k;
     getline(file, k);
     numberOfVertice = stoi(k);
     
     vector<pair<int, int>> v;
     while (getline(file, k)) {
-        cout << "L " << k << endl;
+        //cout << "L " << k << endl;
         int l1 = stoi(k.substr(0, k.find(" ")))-1, l2 = stoi(k.substr(k.find(" ") + 1))-1;
         if(l1 < l2) v.push_back(make_pair(l1, l2));
     }
