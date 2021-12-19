@@ -14,7 +14,7 @@ using namespace std;
 pair<vector<pair<int, int>>, int> getData() {
     int numberOfVertice;
     fstream file;
-    file.open("gc_1000_300013.txt", ios::in); 
+    file.open("gc500.txt", ios::in); 
     string k;
     getline(file, k);
     numberOfVertice = stoi(k);

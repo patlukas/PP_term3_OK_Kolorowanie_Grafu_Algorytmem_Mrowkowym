@@ -15,17 +15,19 @@ class AntSLF {
 	vector<int> dsat; //dsat[x] - stopieñ nasycenia wierzcho³ka x
 	vector<int> verticesWithoutColor; //zbiór wierzcho³ków nie pokolorowanych
 	vector<vector<float>> coloringQuality; //iloœæ feromoonu
+	vector<float> verticesSumColoringQuality; //tablica sum potrzebnych do wyliczenia T2
 
 	int znajdzWierzcholekONajwiekszymStopniu(vector<int>);
 	void arraysInicjalization(int);
 	void coloringVertice(int, int);
 	void deleteColoredVerticeFromListVerticesWithoutColor(int);
 	int chooseVertice();
-	int getMinValColorForVertice(int);
-	int getDsat(int);
 	int chooseVertice_calculateN1(int);
 	float chooseVertice_calculateT1(int);
 	float chooseVertice_calculateT2(int, int);
+	float getSumColoringQuality(int, int);
+	void updateSumColoringQuality(int, int);
+	pair<int, int> getMinColorAndDsat(int); //zwraca <minColor, Dsat>
 
 public:
 	AntSLF(vector<vector<int>>, int, vector<vector<float>>);
