@@ -24,6 +24,7 @@ class ACO{
 	void createListaNieSasiedztwa();
 	void setQualityNieSasiadow();
 	void setQualityDeltaNieSasiadow();
+	void runAnt(vector<vector<int>>, int, vector<vector<float>>);
 	
 public:
 	ACO(vector<pair<int, int>>, int);

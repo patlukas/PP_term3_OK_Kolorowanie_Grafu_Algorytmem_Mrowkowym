@@ -1,11 +1,13 @@
 #include "ACO.h"
-
+void runAnt() {
+	cout << "POLSKA";
+}
 ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 	
 	this->wyparowywanie = 0.5;
 	this->minNumberOfColor = numberOfVertices;
 	this->numberOfCycle = 250;
-	this->numberOfAnt = 10;
+	this->numberOfAnt = 20;
 	vector<vector<int>> bestSubsetsOfVertices(numberOfVertices);
 	this->bestSubsetsOfVertices = bestSubsetsOfVertices;
 
@@ -24,13 +26,13 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 		this->setQualityDeltaNieSasiadow();
 		int i = 0;
 		float kkk = 0;
-		for (int ant = 0; ant < this->numberOfAnt; ant++) {
-			
-			cout << "\tAnt " << ant << endl;
-			clock_t s = clock();
+
+		for (int ant = 0; ant < this->numberOfAnt; ant++) {	
+			//cout << "\tAnt " << ant << endl;
+			//clock_t s = clock();
 			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality);
 			kkk += slf.numberOfColors;
-			cout << "\t\tKolorow " << slf.numberOfColors <<" Czas: "<< ((clock() - s) / (double)CLOCKS_PER_SEC) << endl;
+			//cout << "\t\tKolorow " << slf.numberOfColors <<" Czas: "<< ((clock() - s) / (double)CLOCKS_PER_SEC) << endl;
 			if (slf.numberOfColors < this->minNumberOfColor) {
 				cout << "\t\t\tREKORD " << slf.numberOfColors<<endl;
 				this->bestSubsetsOfVertices = slf.subsetsOfVertices;
@@ -66,6 +68,10 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 			//cout << endl;
 		}
 	}
+}
+
+void ACO::runAnt(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<float>> coloringQuality) {
+
 }
 
 void ACO::inicjalizationArrayQuality(int numberOfVertices) {

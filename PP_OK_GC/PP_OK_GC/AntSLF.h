@@ -16,8 +16,9 @@ class AntSLF {
 	vector<int> verticesWithoutColor; //zbiór wierzcho³ków nie pokolorowanych
 	vector<vector<float>> coloringQuality; //iloœæ feromoonu
 	vector<float> verticesSumColoringQuality; //tablica sum potrzebnych do wyliczenia T2
+	vector<vector<bool>> listUsedColorByNeigbours;
 
-	int znajdzWierzcholekONajwiekszymStopniu(vector<int>);
+	int znajdzWierzcholekONajwiekszymStopniu();
 	void arraysInicjalization(int);
 	void coloringVertice(int, int);
 	void deleteColoredVerticeFromListVerticesWithoutColor(int);
@@ -27,7 +28,7 @@ class AntSLF {
 	float chooseVertice_calculateT2(int, int);
 	float getSumColoringQuality(int, int);
 	void updateSumColoringQuality(int, int);
-	pair<int, int> getMinColorAndDsat(int); //zwraca <minColor, Dsat>
+	void updateCminAndDsat(int, int);
 
 public:
 	AntSLF(vector<vector<int>>, int, vector<vector<float>>);
