@@ -8,21 +8,20 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
+#include <math.h>
 
 using namespace std;
 
 pair<vector<pair<int, int>>, int> getData() {
     int numberOfVertice;
     fstream file;
-   // file.open("gc500.txt", ios::in); 
-    file.open("gc1000_300013.txt", ios::in); 
+    file.open("example_8.txt", ios::in); 
     string k;
     getline(file, k);
     numberOfVertice = stoi(k);
     
     vector<pair<int, int>> v;
     while (getline(file, k)) {
-        //cout << "L " << k << endl;
         int l1 = stoi(k.substr(0, k.find(" ")))-1, l2 = stoi(k.substr(k.find(" ") + 1))-1;
         if(l1 < l2) v.push_back(make_pair(l1, l2));
     }
@@ -36,12 +35,9 @@ int main() {
     //srand((unsigned int)time(NULL));
 
     pair<vector<pair<int, int>>, int> r = getData();
-    //cout << r.second << endl;
-    //for (auto pp : r.first) cout <<"L " << pp.first << " " << pp.second << endl;
     vector<pair<int, int>> edges = r.first;
-  //  edges.push_back(make_pair(1, 2));
     int numverOfVertive = r.second;
-    ACO k(edges, numverOfVertive);
+    ACO k(edges, numverOfVertive, 0.5, 3, 2, 500000000, 25*60*10000000);
     cout << k.minNumberOfColor << endl;
     for (int i = 0; i < k.minNumberOfColor; i++) {
         cout << "Kolor " << i << ": ";

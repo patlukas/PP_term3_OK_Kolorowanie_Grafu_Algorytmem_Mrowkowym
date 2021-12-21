@@ -1,15 +1,12 @@
 #include "ACO.h"
-void runAnt() {
-	cout << "POLSKA";
-}
-ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
+
+ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs) {
 	
-	this->wyparowywanie = 0.5;
+	this->wyparowywanie = wyparowywanie;
 	this->minNumberOfColor = numberOfVertices;
-	this->numberOfCycle = 250;
-	this->numberOfAnt = 20;
-	vector<vector<int>> bestSubsetsOfVertices(numberOfVertices);
-	this->bestSubsetsOfVertices = bestSubsetsOfVertices;
+	this->numberOfCycle = maxNumberOfCycle;
+	this->numberOfAnt = maxNumberOfAnt;
+	clock_t timeProgram = clock();
 
 	this->edges = edges;
 
@@ -21,26 +18,26 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 	this->inicjalizationArrayQuality(numberOfVertices);
 
 	this->setQualityNieSasiadow(); 
-	for (int cycle = 0; cycle < this->numberOfCycle; cycle++) {
+	this->getVertexWithTheMostNeighbors();
+
+	for (int cycle = 0; cycle < this->numberOfCycle  && timeProgram + maxTimeProgramInMs > clock(); cycle++) {
+		clock_t timeCycle = clock();
 		cout <<"Cykl "<< cycle << endl;
 		this->setQualityDeltaNieSasiadow();
-		int i = 0;
-		float kkk = 0;
-
-		for (int ant = 0; ant < this->numberOfAnt; ant++) {	
-			//cout << "\tAnt " << ant << endl;
-			//clock_t s = clock();
-			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality);
-			kkk += slf.numberOfColors;
-			//cout << "\t\tKolorow " << slf.numberOfColors <<" Czas: "<< ((clock() - s) / (double)CLOCKS_PER_SEC) << endl;
+		int ant, sumUsedColor = 0;
+		for (ant = 0; ant < this->numberOfAnt && timeCycle + maxTimeOfCycleInMs > clock(); ant++) {
+			cout << "\tAnt " << ant << endl;
+			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality, this->verticewWithTheMostNeighbors);
+			sumUsedColor += slf.numberOfColors;
+			cout << "Wynik ant: " << slf.numberOfColors << endl;
 			if (slf.numberOfColors < this->minNumberOfColor) {
 				cout << "\t\t\tREKORD " << slf.numberOfColors<<endl;
 				this->bestSubsetsOfVertices = slf.subsetsOfVertices;
 				this->minNumberOfColor = slf.numberOfColors;
 			}
 			for (int i = 0; i < this->numberOfVertices; i++) {
-				int j;
-				for (j = 0; j < this->numberOfVertices; j++) {
+				int j = 0;
+				for (j = 0; j < slf.numberOfColors; j++) {
 					bool inSubsets = false;
 					for (auto vertice : slf.subsetsOfVertices[j]) {
 						if (vertice == i) {
@@ -50,35 +47,29 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices) {
 					}
 					if (inSubsets) break;
 				}
-				for (auto nieSasiad : this->listaNieSasiedztwa[i]) {
-					if (i > nieSasiad) continue;
-					for (auto vertice : slf.subsetsOfVertices[j]) {
+				for (int vertice : slf.subsetsOfVertices[j]) {
+					for (int nieSasiad : this->listaNieSasiedztwa[i]) {
 						if (vertice == nieSasiad) this->coloringQualityDelta[i][nieSasiad] += (1 / (float)slf.numberOfColors);
+						else if (vertice < nieSasiad) break;
 					}
 				}
 			}
 		}
-		cout << "\t" << kkk / numberOfAnt << endl;
+		cout << "\t Avg color: " << (float)sumUsedColor / ant << " czas: " << clock() - timeCycle << " ant: " << ant << endl;
 		for (int i = 0; i < this->numberOfVertices; i++) {
-			for (auto vertice : this->listaNieSasiedztwa[i]) {
-				if (vertice > i)
-					this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
-				//cout << this->coloringQuality[i][vertice] << " ";
+			for (int vertice : this->listaNieSasiedztwa[i]) {
+				this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
+				cout << i<<" "<<vertice<<": "<<this->coloringQuality[i][vertice] << endl;
 			}
-			//cout << endl;
 		}
 	}
 }
 
-void ACO::runAnt(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<float>> coloringQuality) {
-
-}
-
 void ACO::inicjalizationArrayQuality(int numberOfVertices) {
+	vector<float> tempFloat(numberOfVertices);
 	for (int i = 0; i < numberOfVertices; i++) {
-		vector<float> temp(numberOfVertices);
-		this->coloringQuality.push_back(temp);
-		this->coloringQualityDelta.push_back(temp);
+		this->coloringQuality.push_back(tempFloat);
+		this->coloringQualityDelta.push_back(tempFloat);
 	}
 }
 
@@ -95,10 +86,9 @@ void ACO::createListaNieSasiedztwa() {
 	vector<vector<int>> listaNieSasiedztwa(this->numberOfVertices);
 	this->listaNieSasiedztwa = listaNieSasiedztwa;
 	for (int i = 0; i < this->numberOfVertices; i++) {
-		for (int j = 0; j < this->numberOfVertices; j++) {
-			if (i >= j) continue;
+		for (int j = i+1; j < this->numberOfVertices; j++) {
 			bool isSasiad = false;
-			for (auto sasiad : this->listaSasiedztwa[i]) {
+			for (int sasiad : this->listaSasiedztwa[i]) {
 				if (sasiad == j) {
 					isSasiad = true;
 					break;
@@ -117,6 +107,18 @@ void ACO::setQualityNieSasiadow() {
 
 void ACO::setQualityDeltaNieSasiadow() {
 	for (int i = 0; i < this->numberOfVertices; i++)
-		for (auto nieSasiad : this->listaNieSasiedztwa[i])
+		for (int nieSasiad : this->listaNieSasiedztwa[i])
 			this->coloringQualityDelta[i][nieSasiad] = 0;
+}
+
+void ACO::getVertexWithTheMostNeighbors() {
+	int ver = 0;
+	int stopien = 0;
+	for (int vertice = 0; vertice < this->numberOfVertices; vertice++) {
+		if (this->listaSasiedztwa[vertice].size() > stopien) {
+			ver = vertice;
+			stopien = this->listaSasiedztwa[vertice].size();
+		}
+	}
+	this->verticewWithTheMostNeighbors = ver;
 }

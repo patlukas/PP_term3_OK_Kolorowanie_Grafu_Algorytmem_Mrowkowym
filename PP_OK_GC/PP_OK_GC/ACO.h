@@ -9,10 +9,11 @@
 using namespace std;
 
 class ACO{
-	int wyparowywanie;
+	float wyparowywanie;
 	int numberOfVertices;
 	int numberOfCycle;
 	int numberOfAnt;
+	int verticewWithTheMostNeighbors;
 	vector<vector<float>> coloringQuality;
 	vector<vector<float>> coloringQualityDelta;
 	vector<vector<int>> listaSasiedztwa;
@@ -24,10 +25,10 @@ class ACO{
 	void createListaNieSasiedztwa();
 	void setQualityNieSasiadow();
 	void setQualityDeltaNieSasiadow();
-	void runAnt(vector<vector<int>>, int, vector<vector<float>>);
+	void getVertexWithTheMostNeighbors();
 	
 public:
-	ACO(vector<pair<int, int>>, int);
+	ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs);
 	int minNumberOfColor;
 	vector<vector<int>> bestSubsetsOfVertices;
 };

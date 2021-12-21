@@ -1,6 +1,6 @@
 #include "AntSLF.h"
 
-AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<float>> coloringQuality) {
+AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector<vector<float>> coloringQuality, int verticewWithTheMostNeighbors) {
 	this->numberOfColors = 1;
 	
 	this->coloringQuality = coloringQuality;
@@ -10,31 +10,41 @@ AntSLF::AntSLF(vector<vector<int>> listaSasiedztwa, int numberOfVertices, vector
 	this->arraysInicjalization(numberOfVertices);
 
 	int color = 0;
-	int verticesToColoring = this->znajdzWierzcholekONajwiekszymStopniu();
+	int verticesToColoring = verticewWithTheMostNeighbors;
 	this->coloringVertice(verticesToColoring, color);
+	cout << "\tChoosed vertice: " << verticesToColoring << " color: " << color << endl;
 	while(this->verticesWithoutColor.size() > 1) {
 		this->updateCminAndDsat(verticesToColoring, color);
+		for (int v : this->verticesWithoutColor) {
+			cout << "\t\t\t\t"<<v<<" cmin: " << this->c_min[v] << " dsat : " << this->dsat[v] << endl;
+		}
 		this->deleteColoredVerticeFromListVerticesWithoutColor(verticesToColoring);
 		this->updateSumColoringQuality(verticesToColoring, color);
 		verticesToColoring = this->chooseVertice();//wybranie wierzcho³ka v 1. strategi¹
 		color = this->c_min[verticesToColoring];//wybranie koloru 1. strategi¹
+		cout << "\tChoosed vertice: " << verticesToColoring << " color: " << color << endl;
 		this->coloringVertice(verticesToColoring, color);
 		if (color == this->numberOfColors) this->numberOfColors += 1;
 	}
 }
 
 int AntSLF::chooseVertice() {
-	float alfa = 4, beta = 1 ;
+	float alfa = 2, beta = 1 ;
 	vector<float> p(this->verticesWithoutColor.size());
 	float mianownik = 0;
 	
 	for (int i = 0; i < this->verticesWithoutColor.size(); i++) {
 		p[i] = pow(this->chooseVertice_calculateT1(this->verticesWithoutColor[i]), alfa);
 		p[i] *= pow(this->chooseVertice_calculateN1(this->verticesWithoutColor[i]), beta);
+		cout << "\t\t" << this->verticesWithoutColor[i] << " " << p[i] <<"("<< this->verticesSumColoringQuality[this->verticesWithoutColor[i]]<<" ("<< this->chooseVertice_calculateT1(this->verticesWithoutColor[i]) << "))" << endl;;
+		//cout << "\t\t\tp=" << this->chooseVertice_calculateT1(this->verticesWithoutColor[i]) << "^" << alfa << "*" << this->chooseVertice_calculateN1(this->verticesWithoutColor[i]) << "^" << beta << "=" << pow(this->chooseVertice_calculateT1(this->verticesWithoutColor[i]), alfa) << "*" << pow(this->chooseVertice_calculateN1(this->verticesWithoutColor[i]), beta) << endl;
+		
+		//if (p[i] < 1 / 10000) p[i] = 0;
 		mianownik += p[i];
 	}
-	float random = (rand() % 10000);
-	random /= 10000;
+	int randomInt = rand() % 10000;
+	float random = (float)randomInt / 10000;
+	cout << "\t\trandom: " << random << endl;
 	float sum = 0;
 	for (int i = 0; i < p.size(); i++) {
 		sum += p[i] / mianownik;
@@ -63,7 +73,7 @@ float AntSLF::getSumColoringQuality(int vertice, int color) {
 void AntSLF::updateSumColoringQuality(int vertice, int color) {
 	for (int verticeWithoutColor : this->verticesWithoutColor) {
 		if (c_min[verticeWithoutColor] == color) {
-			int quality;
+			float quality;
 			if (vertice > verticeWithoutColor) quality = this->coloringQuality[verticeWithoutColor][vertice];
 			else quality = this->coloringQuality[vertice][verticeWithoutColor];
 			verticesSumColoringQuality[verticeWithoutColor] += quality;
@@ -78,7 +88,7 @@ void AntSLF::updateCminAndDsat(int verticeToColoring, int color) {
 		this->listUsedColorByNeigbours[indexVertice][color] = true;
 		this->dsat[indexVertice] += 1;
 		if (this->c_min[indexVertice] == color) { //czy kolor u¿yty w s¹siednim wierzcho³ku by³ minimalny dla tego wierzcho³ka
-			for (int i = 0; i < this->listUsedColorByNeigbours[indexVertice].size(); i++) { //szukanie nowego c_min
+			for (int i = color+1; i < this->listUsedColorByNeigbours[indexVertice].size(); i++) { //szukanie nowego c_min
 				if (this->listUsedColorByNeigbours[indexVertice][i] == false) {
 					this->c_min[indexVertice] = i;
 					this->verticesSumColoringQuality[indexVertice] = this->getSumColoringQuality(indexVertice, i);
@@ -92,19 +102,6 @@ void AntSLF::updateCminAndDsat(int verticeToColoring, int color) {
 float AntSLF::chooseVertice_calculateT2(int vertice, int color) {
 	if (this->subsetsOfVertices[color].size() == 0) return 1;
 	else return this->verticesSumColoringQuality[vertice] / this->subsetsOfVertices[color].size();
-}
-
-int AntSLF::znajdzWierzcholekONajwiekszymStopniu() {
-	// *DO* Do optymalizacji mo¿na wysy³¹æ z ACO.cpp wierzcho³ek od ktorego trzeba rozpocz¹æ
-	int ver = this->verticesWithoutColor[0];
-	int stopien = 0;
-	for (int vertice : this->verticesWithoutColor) {
-		if (this->listaSasiedztwa[vertice].size() > stopien) {
-			ver = vertice;
-			stopien = this->listaSasiedztwa[vertice].size();
-		}
-	}
-	return ver;
 }
 
 void AntSLF::arraysInicjalization(int numberOfVertices) {
