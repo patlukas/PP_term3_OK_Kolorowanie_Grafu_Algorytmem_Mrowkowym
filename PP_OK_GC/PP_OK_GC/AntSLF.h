@@ -9,6 +9,8 @@ using namespace std;
 
 class AntSLF {
 	int numberOfVertices;
+	float alfa;
+	float beta;
 	
 	vector<vector<int>> listaSasiedztwa; //lista s¹siedztwa grafu
 	vector<int> c_min; //c_min[x] - minimalny kolor jaki mo¿e byæ przyporz¹dkowany wierzcho³kowi x
@@ -30,7 +32,7 @@ class AntSLF {
 	void updateCminAndDsat(int, int);
 
 public:
-	AntSLF(vector<vector<int>>, int, vector<vector<float>>, int);
+	AntSLF(vector<vector<int>>, int, vector<vector<float>>, int, float, float);
 	vector<int> listSetColorVertices;
 	int numberOfColors; //iloœæ u¿ytych kolorów
 	vector<vector<int>> subsetsOfVertices; //podzbiowy wierzcho³ków

@@ -28,7 +28,7 @@ class ACO{
 	void getVertexWithTheMostNeighbors();
 	
 public:
-	ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs);
+	ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs, float alfa, float beta);
 	int minNumberOfColor;
 	vector<vector<int>> bestSubsetsOfVertices;
 };

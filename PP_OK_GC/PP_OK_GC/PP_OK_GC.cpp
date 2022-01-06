@@ -15,7 +15,7 @@ using namespace std;
 pair<vector<pair<int, int>>, int> getData() {
     int numberOfVertice;
     fstream file;
-    file.open("example_8.txt", ios::in); 
+    file.open("gc500.txt", ios::in); 
     string k;
     getline(file, k);
     numberOfVertice = stoi(k);
@@ -28,17 +28,26 @@ pair<vector<pair<int, int>>, int> getData() {
     return make_pair(v, numberOfVertice);
 }
 
-
 int main() {
-    //srand(time(NULL));
-    srand(100);
-    //srand((unsigned int)time(NULL));
+    srand(time(NULL));
+    //srand(100);
 
     pair<vector<pair<int, int>>, int> r = getData();
     vector<pair<int, int>> edges = r.first;
     int numverOfVertive = r.second;
-    ACO k(edges, numverOfVertive, 0.5, 3, 2, 500000000, 25*60*10000000);
+    /*fstream file;
+    //file.open("result_gc500_4.txt", ios::out);
+
+    /*for (int i = 0; i < 50; i++) {
+        ACO k(edges, numverOfVertive, 0.4, 250, 25, 5000, 5 * 60 * 1000, 1, 1);
+        file << i << ";" << k.minNumberOfColor << endl;
+        cout <<i<<" " << k.minNumberOfColor << endl;
+    }*/
+
+    ACO k(edges, numverOfVertive, 0.4, 250, 25, 5000, 5 * 60 * 1000, 2.25, 1);
+    
     cout << k.minNumberOfColor << endl;
+    
     for (int i = 0; i < k.minNumberOfColor; i++) {
         cout << "Kolor " << i << ": ";
         for (auto v : k.bestSubsetsOfVertices[i]) cout << v << " ";

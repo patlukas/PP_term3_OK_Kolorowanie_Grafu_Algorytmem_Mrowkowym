@@ -1,6 +1,6 @@
 #include "ACO.h"
 
-ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs) {
+ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie, int maxNumberOfCycle, int maxNumberOfAnt, int maxTimeOfCycleInMs, int maxTimeProgramInMs, float alfa, float beta) {
 	
 	this->wyparowywanie = wyparowywanie;
 	this->minNumberOfColor = numberOfVertices;
@@ -26,10 +26,10 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie
 		this->setQualityDeltaNieSasiadow();
 		int ant, sumUsedColor = 0;
 		for (ant = 0; ant < this->numberOfAnt && timeCycle + maxTimeOfCycleInMs > clock(); ant++) {
-			cout << "\tAnt " << ant << endl;
-			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality, this->verticewWithTheMostNeighbors);
+			//cout << "\tAnt " << ant << endl;
+			AntSLF slf(this->listaSasiedztwa, this->numberOfVertices, this->coloringQuality, this->verticewWithTheMostNeighbors, alfa, beta);
 			sumUsedColor += slf.numberOfColors;
-			cout << "Wynik ant: " << slf.numberOfColors << endl;
+			//cout << "Wynik ant: " << slf.numberOfColors << endl;
 			if (slf.numberOfColors < this->minNumberOfColor) {
 				cout << "\t\t\tREKORD " << slf.numberOfColors<<endl;
 				this->bestSubsetsOfVertices = slf.subsetsOfVertices;
@@ -59,7 +59,7 @@ ACO::ACO(vector<pair<int, int>> edges, int numberOfVertices, float wyparowywanie
 		for (int i = 0; i < this->numberOfVertices; i++) {
 			for (int vertice : this->listaNieSasiedztwa[i]) {
 				this->coloringQuality[i][vertice] = this->wyparowywanie * this->coloringQuality[i][vertice] + this->coloringQualityDelta[i][vertice];
-				cout << i<<" "<<vertice<<": "<<this->coloringQuality[i][vertice] << endl;
+				//cout << i<<" "<<vertice<<": "<<this->coloringQuality[i][vertice] << endl;
 			}
 		}
 	}
